@@ -142,14 +142,14 @@ export default function Dashboard({
         </div>
 
       </main>
-      
+
       {/* ── Bottom navigation ── */}
-      <BottomNav
-        active="home"
+        <BottomNav
+         active="home"
         onHome={() => {}}
         onWithdraw={onWithdraw}
-        onDeposit={() => {}}
-      />
+        onDeposit={() => alert('Deposits coming soon!')}
+    />
 
     </div>
   )
