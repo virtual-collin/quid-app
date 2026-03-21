@@ -363,3 +363,55 @@ body {
   line-height: 1.5;
   font-weight: 500;
 }
+
+/* ── Animations ── */
+
+/*
+ * Shake animation — used when PIN verification fails.
+ * Mimics the native iOS/Android incorrect PIN shake.
+ * Short and snappy so it doesn't feel sluggish.
+ */
+ @keyframes shake {
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(-8px); }
+  30%  { transform: translateX(8px); }
+  45%  { transform: translateX(-6px); }
+  60%  { transform: translateX(6px); }
+  75%  { transform: translateX(-4px); }
+  90%  { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/*
+ * Fade in — used when screens and elements appear.
+ * Subtle enough not to feel slow on repeated use.
+ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/*
+ * Spinner — used on loading states.
+ */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}

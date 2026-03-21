@@ -47,6 +47,8 @@ export default function PinEntry({ onSuccess }) {
 
   /** Prevents double-submission while the API call is in flight */
   const [isLoading, setIsLoading] = useState(false)
+  const [shake, setShake] = useState(false)
+
 
   /**
    * Handles a keypad key press.
@@ -99,9 +101,12 @@ export default function PinEntry({ onSuccess }) {
       const { currentBalance } = await checkPin(pin)
       onSuccess(currentBalance)
     } catch (err) {
-      setError(err.message)
-      setDigits([])
-    } finally {
+        setError(err.message)
+        setDigits([])
+        // Trigger shake animation then remove class so it can retrigger
+        setShake(true)
+        setTimeout(() => setShake(false), 500)
+      } finally {
       setIsLoading(false)
     }
   }
@@ -140,10 +145,10 @@ export default function PinEntry({ onSuccess }) {
 
         {/* Dot indicators — one per PIN digit */}
         <div
-          className="pin-entry__dots"
-          role="status"
-          aria-label={`${digits.length} of ${PIN_LENGTH} digits entered`}
-          aria-live="polite"
+            className={`pin-entry__dots ${shake ? 'shake' : ''}`}
+            role="status"
+            aria-label={`${digits.length} of ${PIN_LENGTH} digits entered`}
+            aria-live="polite"
         >
           {Array.from({ length: PIN_LENGTH }, (_, i) => (
             <span
@@ -185,13 +190,20 @@ export default function PinEntry({ onSuccess }) {
 
         {/* Login button */}
         <button
-          className="pin-entry__submit btn btn--primary"
-          onClick={() => digits.length === PIN_LENGTH && submitPin(digits.join(''))}
-          disabled={isLoading || digits.length < PIN_LENGTH}
-          aria-busy={isLoading}
+        className="pin-entry__submit btn btn--primary"
+        onClick={() => digits.length === PIN_LENGTH && submitPin(digits.join(''))}
+        disabled={isLoading || digits.length < PIN_LENGTH}
+        aria-busy={isLoading}
         >
-          {getButtonLabel()}
-        </button>
+  {isLoading ? (
+    <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
+      <span className="spinner" />
+      Verifying...
+    </span>
+  ) : (
+    getButtonLabel()
+  )}
+</button>
 
       </div>
     </div>

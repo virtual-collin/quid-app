@@ -29,6 +29,7 @@ const PIN_API_URL = 'https://pinapi.screencloudsolutions.com/api/pin'
  * const { currentBalance } = await checkPin('1111')
  */
 async function checkPin(pin) {
+  await new Promise(resolve => setTimeout(resolve, 800))
   const response = await fetch(PIN_API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
