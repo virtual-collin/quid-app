@@ -183,3 +183,30 @@
 .dashboard__actions {
     padding: 16px 0 8px;
   }
+
+  /* ── Empty state ── */
+.dashboard__empty {
+    padding: var(--space-lg) 0;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-md);
+  }
+  
+  .dashboard__empty-text {
+    font-size: 14px;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+  
+  /* ── Overdrawn badge on transaction ── */
+  .dashboard__txn-overdrawn-badge {
+    display: inline-block;
+    background: var(--color-danger-dim);
+    color: var(--color-danger);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-full);
+    margin-left: 6px;
+    vertical-align: middle;
+    border: 1px solid var(--color-danger-border);
+  }

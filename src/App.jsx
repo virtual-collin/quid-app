@@ -37,6 +37,7 @@ export default function App() {
   const [balance, setBalance] = useState(0)
   const [stock, setStock] = useState(INITIAL_STOCK)
   const [lastTransaction, setLastTransaction] = useState(null)
+  const [transactions, setTransactions] = useState([])
 
   /**
    * Called by PinEntry on successful API response.
@@ -62,6 +63,7 @@ export default function App() {
     const balanceAfter = balance - amount
     const isOverdrawn = balanceAfter < 0
 
+    // Deduct dispensed notes from machine stock
     setStock(prev => ({
       20: prev[20] - (notes[20] ?? 0),
       10: prev[10] - (notes[10] ?? 0),
@@ -70,13 +72,20 @@ export default function App() {
 
     setBalance(balanceAfter)
 
-    setLastTransaction({
+    const transaction = {
       amount,
       notes,
       balanceBefore,
       balanceAfter,
       isOverdrawn,
-    })
+      date: new Date(),
+      id: Date.now(),
+    }
+
+    setLastTransaction(transaction)
+
+    // Add to transaction history — most recent first
+    setTransactions(prev => [transaction, ...prev])
 
     setScreen('breakdown')
   }
@@ -101,16 +110,17 @@ export default function App() {
           />
         )
 
-        case 'dashboard':
-          return (
-            <Dashboard
-              balance={balance}
-              overdraftLimit={OVERDRAFT_LIMIT}
-              onWithdraw={() => setScreen('amount')}
-              onSignOut={handleSignOut}
-              onEnd={() => setScreen('end')}
-            />
-          )
+      case 'dashboard':
+        return (
+          <Dashboard
+            balance={balance}
+            overdraftLimit={OVERDRAFT_LIMIT}
+            onWithdraw={() => setScreen('amount')}
+            onSignOut={handleSignOut}
+            onEnd={() => setScreen('end')}
+            transactions={transactions}
+          />
+        )
 
       case 'amount':
         return (
