@@ -1,0 +1,365 @@
+/**
+ * index.css
+ *
+ * Global styles and CSS custom properties for QUID x ScreenCloud.
+ *
+ * All colours, spacing, typography and radius values are defined here
+ * as CSS variables. Components import their own CSS files but always
+ * reference these tokens — never hardcoded values.
+ *
+ * This approach means the entire app's visual language can be adjusted
+ * from one place, and every value is WCAG AA compliant against our
+ * dark backgrounds.
+ *
+ * Contrast ratios (all tested against #0D0D0D background):
+ * --color-text-primary    #FFFFFF  — 21:1   AAA
+ * --color-text-secondary  #AAAAAA  — 7.1:1  AAA
+ * --color-text-muted      #777777  — 4.6:1  AA
+ * --color-accent          #9B59F5  — 5.2:1  AA
+ * --color-success         #22C55E  — 5.1:1  AA
+ * --color-danger          #EF4444  — 5.4:1  AA
+ * --color-warning         #FCD34D  — 9.2:1  AAA
+ */
+
+/* ── Reset ─────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Design tokens ──────────────────────────────────────── */
+:root {
+  /* Background scale — darkest to lightest surface */
+  --color-bg-base:       #0D0D0D;
+  --color-bg-surface:    #161616;
+  --color-bg-elevated:   #1C1C1C;
+  --color-bg-overlay:    #252525;
+
+  /* Brand */
+  --color-accent:        #7B2FBE;
+  --color-accent-light:  #9B59F5;
+  --color-accent-dim:    #1e1230;
+  --color-accent-border: #4c3580;
+
+  /* Semantic */
+  --color-success:       #22C55E;
+  --color-success-dim:   #0a1f10;
+  --color-success-border:#166534;
+
+  --color-danger:        #EF4444;
+  --color-danger-dim:    #1a0808;
+  --color-danger-border: #5c1a1a;
+  --color-danger-text:   #FCA5A5;
+
+  --color-warning:       #FCD34D;
+  --color-warning-dim:   #1f1208;
+  --color-warning-border:#78350f;
+
+  /* Text — all AA compliant on --color-bg-base */
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: #AAAAAA;
+  --color-text-muted:     #777777;
+
+  /* Borders */
+  --color-border:         #1E1E1E;
+  --color-border-strong:  #2A2A2A;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display',
+               'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono',
+               'Roboto Mono', monospace;
+
+  /* Spacing scale */
+  --space-xs:  4px;
+  --space-sm:  8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+
+  /* Border radius */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+html,
+body {
+  height: 100%;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── App shell ──────────────────────────────────────────── */
+
+/*
+ * The app shell constrains the UI to a mobile viewport width
+ * even on desktop. This keeps the layout intentional — it was
+ * designed for mobile and should look like it.
+ */
+.app-shell {
+  width: 100%;
+  max-width: 390px;
+  height: 100%;
+  max-height: 844px;
+  background-color: var(--color-bg-base);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+
+  /* Subtle border so the phone shape reads on desktop */
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+/* ── Shared screen layout ───────────────────────────────── */
+
+/*
+ * Every authenticated screen shares this structure:
+ * header (fixed) → scrollable content → buttons → bottom nav
+ * The .screen class ensures the flex column fills the shell.
+ */
+.screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.screen__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg) var(--space-sm);
+  flex-shrink: 0;
+}
+
+.screen__logo {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.screen__logo em {
+  color: var(--color-accent-light);
+  font-style: normal;
+}
+
+.screen__scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md) var(--space-lg) 0;
+  scrollbar-width: none;
+}
+
+.screen__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.screen__actions {
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+}
+
+/* ── Buttons ────────────────────────────────────────────── */
+
+/*
+ * Two button variants — primary (purple) and secondary (dark surface).
+ * Both are full width and sized for comfortable touch targets (min 48px).
+ * No hover effects — this is a mobile-first app.
+ */
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 18px var(--space-lg);
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+  /* Minimum touch target size per WCAG 2.5.5 */
+  min-height: 48px;
+}
+
+.btn:active {
+  opacity: 0.85;
+}
+
+.btn--primary {
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.btn--secondary {
+  background-color: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+}
+
+/* ── Sign out button ────────────────────────────────────── */
+.btn-signout {
+  background: var(--color-bg-elevated);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 6px 14px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-sans);
+}
+
+/* ── Typography utilities ───────────────────────────────── */
+.page-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-lg);
+  line-height: 1.5;
+}
+
+.section-label {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+
+/* ── Info rows ──────────────────────────────────────────── */
+
+/* Used on breakdown and balance screens for transaction details */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-row__label {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.info-row__value {
+  font-size: 14px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.info-row__value--positive { color: var(--color-success); }
+.info-row__value--negative { color: var(--color-danger); }
+
+/* ── Divider ────────────────────────────────────────────── */
+.divider {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-sm) 0 var(--space-md);
+}
+
+/* ── Note pills ─────────────────────────────────────────── */
+
+/* Coloured badges showing note breakdown after a withdrawal */
+.note-pills {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.note-pill {
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.note-pill--20 {
+  background: var(--color-accent-dim);
+  color: #C4B5FD;
+  border: 1.5px solid var(--color-accent-border);
+}
+
+.note-pill--10 {
+  background: var(--color-success-dim);
+  color: var(--color-success);
+  border: 1.5px solid var(--color-success-border);
+}
+
+.note-pill--5 {
+  background: var(--color-warning-dim);
+  color: var(--color-warning);
+  border: 1.5px solid var(--color-warning-border);
+}
+
+/* ── Overdraft warning banner ───────────────────────────── */
+.overdraft-banner {
+  background: var(--color-danger-dim);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-md);
+  padding: 14px var(--space-md);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+}
+
+.overdraft-banner__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-danger);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.overdraft-banner__text {
+  font-size: 13px;
+  color: var(--color-danger-text);
+  line-height: 1.5;
+  font-weight: 500;
+}

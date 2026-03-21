@@ -1,0 +1,66 @@
+/**
+ * SessionEnd.css
+ *
+ * Styles for the session complete screen.
+ *
+ * Centred layout — this screen has no header or nav bar.
+ * The success icon, message and button are the only elements.
+ * Generous vertical spacing makes it feel calm and resolved.
+ */
+
+ .session-end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: var(--space-xl) var(--space-lg);
+    gap: var(--space-lg);
+  }
+  
+  /* ── Success icon ── */
+  .session-end__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--color-success-dim);
+    border: 2px solid var(--color-success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-success);
+    flex-shrink: 0;
+  }
+  
+  .session-end__icon svg {
+    width: 32px;
+    height: 32px;
+  }
+  
+  /* ── Content ── */
+  .session-end__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 280px;
+  }
+  
+  .session-end__title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.5px;
+  }
+  
+  .session-end__message {
+    font-size: 15px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+  
+  /* ── Button ── */
+  .session-end__btn {
+    width: 100%;
+    max-width: 320px;
+  }

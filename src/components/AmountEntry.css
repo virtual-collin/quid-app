@@ -1,0 +1,108 @@
+/**
+ * AmountEntry.css
+ *
+ * Styles for the withdrawal amount selection screen.
+ *
+ * Preset buttons sit in a 2-column grid — large touch targets
+ * make them easy to tap on mobile.
+ *
+ * The active preset uses an outline rather than a border so the
+ * element doesn't shift size when selected.
+ *
+ * The custom input highlights with the accent colour on focus
+ * to match the active preset visual language.
+ */
+
+/* ── Preset grid ── */
+.amount-entry__presets {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  
+  .amount-entry__preset {
+    background: var(--color-bg-surface);
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 20px 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-family: var(--font-mono);
+  
+    /* Comfortable touch target */
+    min-height: 64px;
+    transition: background var(--transition-fast);
+  }
+  
+  .amount-entry__preset:active {
+    background: var(--color-bg-overlay);
+  }
+  
+  /* Selected state — outline so element size doesn't change */
+  .amount-entry__preset--active {
+    background: var(--color-accent-dim);
+    color: #C4B5FD;
+    outline: 1.5px solid var(--color-accent);
+    outline-offset: -1px;
+  }
+  
+  /* ── Custom input ── */
+  .amount-entry__custom {
+    display: flex;
+    align-items: center;
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
+    padding: 0 var(--space-md);
+    margin-bottom: 14px;
+    border: 1.5px solid transparent;
+    transition: border-color var(--transition-fast);
+  }
+  
+  .amount-entry__custom:focus-within,
+  .amount-entry__custom--active {
+    border-color: var(--color-accent);
+  }
+  
+  .amount-entry__currency {
+    color: var(--color-text-secondary);
+    font-size: 20px;
+    font-family: var(--font-mono);
+    margin-right: var(--space-sm);
+    user-select: none;
+  }
+  
+  .amount-entry__input {
+    background: transparent;
+    border: none;
+    color: var(--color-text-primary);
+    font-size: 18px;
+    font-family: var(--font-mono);
+    padding: 16px 0;
+    outline: none;
+    width: 100%;
+  
+    /* Remove browser number input arrows */
+    -moz-appearance: textfield;
+  }
+  
+  .amount-entry__input::-webkit-outer-spin-button,
+  .amount-entry__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  .amount-entry__input::placeholder {
+    color: var(--color-text-muted);
+  }
+  
+  /* ── Error message ── */
+  .amount-entry__error {
+    font-size: 13px;
+    color: var(--color-danger);
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+  }

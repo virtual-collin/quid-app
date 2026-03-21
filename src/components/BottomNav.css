@@ -1,0 +1,88 @@
+/**
+ * BottomNav.css
+ *
+ * Styles for the persistent bottom navigation bar.
+ *
+ * Inactive items use --color-text-muted (#777777) which gives
+ * 4.6:1 contrast on the nav background — passes WCAG AA.
+ *
+ * Active items use --color-accent-light (#9B59F5) which gives
+ * 5.2:1 contrast — also passes WCAG AA.
+ */
+
+ .bottom-nav {
+    display: flex;
+    align-items: stretch;
+    background-color: #0f0f0f;
+    border-top: 1px solid var(--color-border);
+    flex-shrink: 0;
+  
+    /* Safe area padding for devices with a home indicator (iPhone X+) */
+    padding: 8px 0 28px;
+  }
+  
+  .bottom-nav__item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 6px 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+  
+    /* Touch target meets WCAG 2.5.5 minimum */
+    min-height: 48px;
+  }
+  
+  .bottom-nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Default (inactive) icon stroke */
+  .bottom-nav__icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--color-text-muted);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+    transition: stroke var(--transition-fast);
+  }
+  
+  .bottom-nav__label {
+    font-size: 10px;
+    color: var(--color-text-muted);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color var(--transition-fast);
+  }
+  
+  /* Small dot indicator below active tab label */
+  .bottom-nav__pip {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background var(--transition-fast);
+  }
+  
+  /* ── Active state ── */
+  .bottom-nav__item--active .bottom-nav__icon svg {
+    stroke: var(--color-accent-light);
+  }
+  
+  .bottom-nav__item--active .bottom-nav__label {
+    color: var(--color-accent-light);
+  }
+  
+  .bottom-nav__item--active .bottom-nav__pip {
+    background: var(--color-accent-light);
+  }

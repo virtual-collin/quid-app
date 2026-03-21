@@ -1,0 +1,181 @@
+/**
+ * PinEntry.css
+ *
+ * Styles for the login / PIN entry screen.
+ *
+ * Layout is a flex column split into two zones:
+ * - Brand block (logo, name, tagline) — centred, takes available space
+ * - PIN block (heading, dots, keypad, button) — fixed at bottom
+ *
+ * This keeps the logo feeling spacious and the PIN controls
+ * anchored where the user's thumbs naturally reach.
+ */
+
+ .pin-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 32px 22px 36px;
+  }
+  
+  /* ── Brand block ── */
+  .pin-entry__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    justify-content: center;
+  }
+  
+  .pin-entry__logo-mark {
+    width: 80px;
+    height: 80px;
+    border-radius: 26px;
+    background-color: var(--color-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    box-shadow: 0 8px 32px rgba(123, 47, 190, 0.4);
+  }
+  
+  .pin-entry__logo-symbol {
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    font-family: Georgia, serif;
+    line-height: 1;
+  }
+  
+  .pin-entry__brand-name {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--color-text-primary);
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+  
+  .pin-entry__brand-name em {
+    color: var(--color-accent-light);
+    font-style: normal;
+  }
+  
+  .pin-entry__brand-tag {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  /* ── PIN block ── */
+  .pin-entry__pin-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pin-entry__heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  
+  .pin-entry__subheading {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  /* ── PIN dots ── */
+  .pin-entry__dots {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+  
+  .pin-entry__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border-strong);
+    background: transparent;
+    transition: all var(--transition-fast);
+  }
+  
+  .pin-entry__dot--filled {
+    background: var(--color-accent-light);
+    border-color: var(--color-accent-light);
+    transform: scale(1.1);
+  }
+  
+  /* ── Error message ── */
+  .pin-entry__error {
+    font-size: 13px;
+    color: var(--color-danger);
+    text-align: center;
+    margin-bottom: 12px;
+    min-height: 20px;
+  }
+  
+  /* ── Keypad ── */
+  .pin-entry__keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+  
+  .pin-entry__key {
+    background: var(--color-bg-elevated);
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 17px 0;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    user-select: none;
+    transition: background var(--transition-fast);
+  
+    /* Minimum touch target */
+    min-height: 56px;
+  }
+  
+  .pin-entry__key:active {
+    background: var(--color-bg-overlay);
+  }
+  
+  .pin-entry__key:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Action keys (Clear, ⌫) are visually softer than digit keys */
+  .pin-entry__key--action {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    font-family: var(--font-sans);
+    font-weight: 500;
+  }
+  
+  /* ── Submit button ── */
+  .pin-entry__submit {
+    margin-top: 4px;
+  }
+  
+  .pin-entry__submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
