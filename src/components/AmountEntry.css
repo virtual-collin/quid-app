@@ -103,6 +103,7 @@
   .amount-entry__error {
     font-size: 13px;
     color: var(--color-danger);
-    margin-bottom: var(--space-md);
+    padding: var(--space-sm) var(--space-lg) var(--space-sm);
     line-height: 1.5;
+    text-align: center;
   }

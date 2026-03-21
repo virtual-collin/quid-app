@@ -171,7 +171,7 @@ body {
 .screen__scroll {
   flex: 1;
   overflow-y: auto;
-  padding: var(--space-md) var(--space-lg) 0;
+  padding: var(--space-md) var(--space-lg) var(--space-xl);
   scrollbar-width: none;
 }
 

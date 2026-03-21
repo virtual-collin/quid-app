@@ -101,33 +101,28 @@ export default function AmountEntry({
    * knows exactly what to do next.
    */
   function handleConfirm() {
-    // No amount selected
     if (!activeAmount || activeAmount <= 0) {
       setError('Please select or enter an amount.')
       return
     }
 
-    // Must be a multiple of £5 — our smallest note
     if (activeAmount % 5 !== 0) {
       setError('Amount must be a multiple of £5.')
       return
     }
 
-    // Would exceed overdraft limit
     if (activeAmount > maxWithdrawal) {
       setError(`Maximum you can withdraw is ${formatCurrency(maxWithdrawal)}.`)
       return
     }
 
-    // Run the dispense algorithm to check if the machine can make the amount
     const notes = dispenseNotes(activeAmount, stock)
 
     if (!notes) {
-      setError('The machine can\'t make that exact amount with the remaining notes. Please try a different amount.')
+      setError("The machine can't make that exact amount with the remaining notes. Please try a different amount.")
       return
     }
 
-    // All checks passed — hand off to App.jsx
     onConfirm(activeAmount, notes)
   }
 
@@ -158,7 +153,6 @@ export default function AmountEntry({
 
       {/* ── Scrollable content ── */}
       <main className="screen__scroll">
-
         <h2 className="page-title">How much?</h2>
         <p className="page-subtitle">
           Balance: {formatCurrency(balance)} · Max: {formatCurrency(maxWithdrawal)}
@@ -197,14 +191,14 @@ export default function AmountEntry({
           />
         </div>
 
-        {/* Validation error */}
-        {error && (
-          <p className="amount-entry__error" role="alert">
-            {error}
-          </p>
-        )}
-
       </main>
+
+      {/* Error sits here — above buttons, always visible */}
+      {error && (
+        <p className="amount-entry__error" role="alert">
+          {error}
+        </p>
+      )}
 
       {/* ── Actions ── */}
       <div className="screen__actions">
