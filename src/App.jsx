@@ -46,7 +46,11 @@ export default function App() {
    * @param {number} currentBalance - Balance returned from the PIN API
    */
   function handleLoginSuccess(currentBalance) {
-    setBalance(currentBalance)
+    // Only set balance from API on first login.
+    // If transactions already exist this session, keep the running balance.
+    if (transactions.length === 0) {
+      setBalance(currentBalance)
+    }
     setScreen('dashboard')
   }
 
@@ -97,7 +101,6 @@ export default function App() {
    * after real withdrawals.
    */
   function handleSignOut() {
-    setBalance(0)
     setLastTransaction(null)
     setScreen('pin')
   }
