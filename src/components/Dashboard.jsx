@@ -60,6 +60,17 @@ function formatTransactionDate(date) {
 }
 
 /**
+ * Returns a time-appropriate greeting.
+ * Makes the app feel personal and alive.
+ */
+function getGreeting() {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 18) return 'Good afternoon'
+  return 'Good evening'
+}
+
+/**
  * @param {Object}   props
  * @param {number}   props.balance          - Current account balance
  * @param {number}   props.overdraftLimit   - Maximum overdraft allowed
@@ -101,14 +112,16 @@ export default function Dashboard({
 
         {/* Balance hero card */}
         <div className="dashboard__balance-card">
-          <p className="dashboard__balance-greeting">Good morning, Michael</p>
+          <p className="dashboard__balance-greeting">
+            {getGreeting()}, Michael
+          </p>
           <p className="dashboard__balance-amount">
             {isOverdrawn ? '-' : ''}{formatCurrency(balance)}
           </p>
           <div className="dashboard__balance-row">
             <span className="dashboard__balance-sub">Overdraft available</span>
             <span className="dashboard__balance-badge">
-              {formatCurrency(overdraftLimit)}
+              {formatCurrency(Math.max(0, overdraftLimit + Math.min(0, balance)))}
             </span>
           </div>
         </div>
@@ -118,13 +131,13 @@ export default function Dashboard({
           <div className="dashboard__stat">
             <span className="section-label">Total available</span>
             <span className={`dashboard__stat-value ${totalAvailable >= 0 ? 'dashboard__stat-value--positive' : 'dashboard__stat-value--negative'}`}>
-              {formatCurrency(totalAvailable)}
+              {formatCurrency(Math.max(0, totalAvailable))}
             </span>
           </div>
           <div className="dashboard__stat">
-            <span className="section-label">Overdraft limit</span>
-            <span className="dashboard__stat-value dashboard__stat-value--accent">
-              {formatCurrency(overdraftLimit)}
+            <span className="section-label">Overdraft remaining</span>
+            <span className={`dashboard__stat-value ${balance < 0 ? 'dashboard__stat-value--negative' : 'dashboard__stat-value--accent'}`}>
+              {formatCurrency(Math.max(0, overdraftLimit + Math.min(0, balance)))}
             </span>
           </div>
         </div>
@@ -133,7 +146,6 @@ export default function Dashboard({
         <p className="section-label">Recent activity</p>
 
         {transactions.length === 0 ? (
-          /* Empty state — shown before any withdrawals are made */
           <div className="dashboard__empty">
             <p className="dashboard__empty-text">
               No transactions yet. Withdraw some cash to get started.
