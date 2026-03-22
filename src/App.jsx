@@ -64,12 +64,13 @@ export default function App() {
     const isOverdrawn = balanceAfter < 0
 
     // Deduct dispensed notes from machine stock
-    setStock(prev => ({
-      20: prev[20] - (notes[20] ?? 0),
-      10: prev[10] - (notes[10] ?? 0),
-      5:  prev[5]  - (notes[5]  ?? 0),
-    }))
+    const newStock = {
+      20: stock[20] - (notes[20] ?? 0),
+      10: stock[10] - (notes[10] ?? 0),
+      5:  stock[5]  - (notes[5]  ?? 0),
+    }
 
+    setStock(newStock)
     setBalance(balanceAfter)
 
     const transaction = {
@@ -138,6 +139,7 @@ export default function App() {
         return (
           <NoteBreakdown
             transaction={lastTransaction}
+            stock={stock}
             onAnother={() => setScreen('amount')}
             onHome={() => setScreen('dashboard')}
             onSignOut={handleSignOut}

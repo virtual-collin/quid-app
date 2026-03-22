@@ -7,13 +7,20 @@
  * the note breakdown, transaction summary, and overdraft warning
  * if the user has gone into negative balance.
  *
+ * Also shows a low stock warning if any denomination is running
+ * low — defined as 2 or fewer notes remaining.
+ *
  * This screen is never accessed directly via navigation — it is
  * only reachable as a redirect after a completed transaction.
- * That's why it has no nav tab of its own.
  */
 
 import BottomNav from './BottomNav'
 import './NoteBreakdown.css'
+
+/**
+ * Number of notes remaining at which we consider a denomination low.
+ */
+const LOW_STOCK_THRESHOLD = 2
 
 /**
  * Formats a number as a GBP currency string.
@@ -32,18 +39,18 @@ function formatCurrency(amount) {
  * @param {number}   props.transaction.balanceBefore - Balance before withdrawal
  * @param {number}   props.transaction.balanceAfter  - Balance after withdrawal
  * @param {boolean}  props.transaction.isOverdrawn  - Whether user is now overdrawn
+ * @param {Object}   props.stock                    - Remaining note stock
  * @param {Function} props.onAnother                - Navigate to amount entry
  * @param {Function} props.onHome                   - Navigate to dashboard
  * @param {Function} props.onSignOut                - End session
  */
 export default function NoteBreakdown({
   transaction,
+  stock,
   onAnother,
   onHome,
   onSignOut,
 }) {
-  // Guard — should never happen in normal flow but prevents a crash
-  // if this screen is somehow reached without a transaction
   if (!transaction) return null
 
   const {
@@ -56,14 +63,22 @@ export default function NoteBreakdown({
 
   /**
    * Builds the list of dispensed note pills from the notes object.
-   * Filters out denominations where 0 notes were given — no point
-   * showing "0 × £20" in the UI.
+   * Filters out denominations where 0 notes were given.
    */
   const notePills = [
     { denom: 20, count: notes[20], className: 'note-pill--20' },
     { denom: 10, count: notes[10], className: 'note-pill--10' },
     { denom: 5,  count: notes[5],  className: 'note-pill--5'  },
   ].filter(note => note.count > 0)
+
+  /**
+   * Check remaining stock for each denomination.
+   * Flags any that are at or below the low stock threshold.
+   */
+  const lowStockWarnings = [20, 10, 5].filter(denom => {
+    const remaining = stock ? stock[denom] : null
+    return remaining !== null && remaining <= LOW_STOCK_THRESHOLD && remaining > 0
+  })
 
   return (
     <div className="screen fade-in">
@@ -87,17 +102,16 @@ export default function NoteBreakdown({
       {/* ── Scrollable content ── */}
       <main className="screen__scroll">
 
-        {/* Withdrawn amount — red if overdrawn */}
         <p className={`note-breakdown__amount ${isOverdrawn ? 'note-breakdown__amount--overdrawn' : ''}`}>
           {formatCurrency(amount)}
         </p>
         <p className="note-breakdown__subtitle">
           {isOverdrawn
-            ? 'Withdrawn — but there\'s something to know'
+            ? "Withdrawn — but there's something to know"
             : 'Cash dispensed — collect your notes below'}
         </p>
 
-        {/* Overdraft warning banner — only shown if overdrawn */}
+        {/* Overdraft warning banner */}
         {isOverdrawn && (
           <div className="overdraft-banner" role="alert">
             <span className="overdraft-banner__dot" aria-hidden="true" />
@@ -109,16 +123,22 @@ export default function NoteBreakdown({
           </div>
         )}
 
+        {/* Low stock warning */}
+        {lowStockWarnings.length > 0 && (
+          <div className="low-stock-banner" role="status">
+            <span className="low-stock-banner__dot" aria-hidden="true" />
+            <p className="low-stock-banner__text">
+              Running low on{' '}
+              {lowStockWarnings.map(d => `£${d}`).join(' and ')} notes.
+              Please visit another machine soon.
+            </p>
+          </div>
+        )}
+
         {/* Note pills */}
-        <div
-          className="note-pills"
-          aria-label="Notes dispensed"
-        >
+        <div className="note-pills" aria-label="Notes dispensed">
           {notePills.map(({ denom, count, className }) => (
-            <span
-              key={denom}
-              className={`note-pill ${className}`}
-            >
+            <span key={denom} className={`note-pill ${className}`}>
               {count} × £{denom}
             </span>
           ))}
@@ -152,7 +172,6 @@ export default function NoteBreakdown({
 
       {/* ── Actions ── */}
       <div className="screen__actions">
-        {/* Only offer another withdrawal if not overdrawn */}
         {!isOverdrawn && (
           <button className="btn btn--primary" onClick={onAnother}>
             Make another withdrawal

@@ -8,6 +8,9 @@
  *
  * Overdrawn state turns the amount red and surfaces the warning
  * banner — both use semantic danger colours for clarity.
+ *
+ * Low stock warning uses amber/warning colours to distinguish
+ * it from the overdraft danger state.
  */
 
 /* ── Withdrawn amount hero ── */
@@ -33,12 +36,34 @@
   }
   
   /* ── Transaction summary ── */
-  
-  /*
-   * Using a <dl> for the summary is semantically correct —
-   * it's a list of term/definition pairs (label/value).
-   * The info-row styles from index.css handle the visual layout.
-   */
   .note-breakdown__summary {
     margin-bottom: var(--space-lg);
+  }
+  
+  /* ── Low stock warning ── */
+  .low-stock-banner {
+    background: var(--color-warning-dim);
+    border: 1px solid var(--color-warning-border);
+    border-radius: var(--radius-md);
+    padding: 14px var(--space-md);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: var(--space-md);
+  }
+  
+  .low-stock-banner__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-warning);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  
+  .low-stock-banner__text {
+    font-size: 13px;
+    color: var(--color-warning);
+    line-height: 1.5;
+    font-weight: 500;
   }
