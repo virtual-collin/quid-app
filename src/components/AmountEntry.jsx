@@ -135,7 +135,7 @@ export default function AmountEntry({
   }
 
   return (
-    <div className="screen">
+    <div className="screen fade-in">
 
       {/* ── Header ── */}
       <header className="screen__header">

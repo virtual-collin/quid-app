@@ -80,7 +80,7 @@ export default function Dashboard({
   const isOverdrawn = balance < 0
 
   return (
-    <div className="screen">
+    <div className="screen fade-in">
 
       {/* ── Header ── */}
       <header className="screen__header">

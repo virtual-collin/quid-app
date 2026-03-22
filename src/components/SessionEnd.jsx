@@ -19,7 +19,7 @@ import './SessionEnd.css'
  */
 export default function SessionEnd({ onRestart }) {
   return (
-    <div className="session-end">
+    <div className="session-end fade-in">
 
       {/* Success icon */}
       <div className="session-end__icon" aria-hidden="true">

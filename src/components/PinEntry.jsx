@@ -122,7 +122,7 @@ export default function PinEntry({ onSuccess }) {
   }
 
   return (
-    <div className="pin-entry">
+    <div className="pin-entry fade-in">
 
       {/* ── Brand block ── */}
       <div className="pin-entry__brand">
